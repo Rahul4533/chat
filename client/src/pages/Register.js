@@ -5,7 +5,12 @@ function Register() {
   const [password, setPassword] = useState("");
  async function register(e){
   e.preventDefault();
-  await   axios.post('/reg',{user,password});
+  
+  await   axios.post('/register',{user,password}).then(response=> console.log(response)).catch((err)=>{
+    console.log(err);
+  });
+  setUser('');
+  setPassword('');
   }
   return (
     <div className="bg-blue-50 h-screen  flex items-center">
