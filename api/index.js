@@ -2,6 +2,7 @@ const express = require("express");
 const port = 5000;
 const mongoose = require("mongoose");
 const cors = require('cors');
+
 const dotenv = require("dotenv");
 const jwt=require('jsonwebtoken');
 const User=require('./models/user');
@@ -17,18 +18,21 @@ db.once('open',(err)=>{
     console.log("DB Connected");
 })
 const app = express();
-
+app.use(express.json());
 
 app.use(cors({
   credentials:true,
   origin: process.env.Client_Url,
 }));
 
-app.post('/reg',async(req,res) =>{
-  
-   const {username,password}=req.body;
-const createdUser=  await User.create({username,password});
-  console.log(username,password);
+app.get('/',(req,res)=>{
+  res.json('test ok');
+})
+
+
+app.post('/register',async(req,res) =>{
+  const {user,password}=req.body;
+const createdUser=  await User.create({username:user,password:password});
   jwt.sign({userId:createdUser._id},jwtsec,(err,token)=>{
     if(err){
      throw err;
